@@ -3,6 +3,14 @@
 
 End-to-End type safety for REST APIs written in Fastify. Only problem is you have to explicity export and register route handlers. LOL
 
+<br/>
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/soulsam480/my-static-assets/master/ezgif.com-gif-maker.gif" alt="Demo" />  
+</p>
+
+<br/>
+
 ### Why ?
 I love tRPC, like really. But even If I migrated Mirai's codebase to v10, the type inference speed didn't improve that much. I know that the maintainers are working really hard, still out of my frustration, I tried to write something which can make REST APIs end to end type-safe. Definitely there are trade-offs. I borrowed the idea of centralized route registration convention from ruby on rails. I really like the idea of explicitly registering routes. So yes, this thing works. I was able to make it work with Fastify's types for now. Will add some tests and release it later this week. If everything goes well, Mirai will be moving to full REST APIs.
 
@@ -94,6 +102,6 @@ async function getData() {
 - Again the above point as js BE developers are used to writing inlined arrow functions for route handlers
 
 #### Credits
-- tRPC
-- Ruby on rails
-- AdonisJS
+- [tRPC](https://trpc.io)
+- [Ruby on rails](https://rubyonrails.org/)
+- [AdonisJS](https://adonisjs.com/)
