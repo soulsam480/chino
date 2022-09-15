@@ -14,9 +14,7 @@ const HTTP_METHODS = [
 ];
 const ROUTE_DESCRIPTOR_LENGTH = 2;
 
-function isType<T>(val: any, type: string): val is T {
-  return Object.prototype.toString.call(val) === type;
-}
+type OverWrite<T, U> = U & Omit<T, keyof U>;
 
 type NormalizeArgs<T> = {
   [K in keyof T as 'Headers' extends K
@@ -34,7 +32,7 @@ type InferParams<H> = H extends (...args: infer A) => Promise<unknown>
             string & K
           >]: NormalizeArgs<R>[K];
         }
-      : never
+      : Record<string, never>
     : never
   : never;
 
@@ -65,13 +63,13 @@ interface CreateFetcherOptions extends AxiosRequestConfig {}
 export class ChinoClient<
   Registry extends { [x: string]: (...args: any) => Promise<any> },
 > {
-  #axios: AxiosInstance;
-  options: CreateFetcherOptions | undefined;
+  axios: AxiosInstance;
+  #options: CreateFetcherOptions | undefined;
 
   constructor(opts?: CreateFetcherOptions) {
-    this.options = opts;
+    this.#options = opts;
 
-    this.#axios = Axios.create(this.options);
+    this.axios = Axios.create(this.#options);
   }
 
   #getLogMessage(msg: string) {
@@ -101,27 +99,27 @@ export class ChinoClient<
    *
    * @param route request route
    * @param args route args object - subset of Fastify RouteGenericInterface
-   * @param requestConfig optional request config (overwritten by args to avoid errors)
+   * @param requestConfig per request axios config to extend
    */
   async fetch<
     K extends keyof Registry,
     H extends Registry[K],
     R extends InferReturnType<ReturnType<H>>,
-    P extends InferParams<H>,
+    Args extends InferParams<H>,
   >(
     route: K,
-    args: P,
+    args: Args,
     requestConfig: AxiosRequestConfig<
-      'body' extends keyof P ? P['body'] : any
+      'body' extends keyof Args ? Args['body'] : any
     > = {},
   ) {
     const [method, url] = this.#getPathAndMethod(route as string);
 
-    return await this.#axios.request<R>({
+    return await this.axios.request<R>({
       method,
       url: url.startsWith('/') ? url : `/${url}`,
       ...requestConfig,
-      ...(isType<object>(args, '[object Object]') ? args : {}),
+      ...args,
     });
   }
 }

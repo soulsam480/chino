@@ -1,5 +1,5 @@
 import { FastifyRequest } from 'fastify';
-import { ChinoClient } from '../src';
+import { ChinoClient } from '../../src';
 
 interface Params1 {
   id: string;

@@ -1,17 +1,40 @@
 {
-  "name": "rest-ts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "chino",
+  "version": "0.0.1",
+  "description": "End-to-End type safety for REST APIs written in Fastify. Only problem is you have to explicity export and register route handlers. LOL",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --tsconfig ./examples/fastify-app/tsconfig.json ./examples/fastify-app/src/app.ts",
+    "build": "npx microbundle --tsconfig tsconfig.build.json"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "soulsam480<soulsam480@hotmail.com>",
+  "license": "MIT",
+  "source": "src/index.ts",
+  "main": "dist/chino.js",
+  "umd:main": "dist/chino.umd.js",
+  "module": "dist/chino.mjs",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/chino.js",
+    "default": "./dist/chino.modern.mjs"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "types": "dist/index.d.ts",
   "dependencies": {
-    "axios": "^0.27.2",
-    "fastify": "^4.5.3",
-    "lodash-es": "^4.17.21"
+    "axios": "^0.27.2"
+  },
+  "peerDependencies": {
+    "fastify": "^4.0.0"
+  },
+  "devDependencies": {
+    "lodash-es": "^4.17.21",
+    "@types/node": "^18.7.17",
+    "fastify-plugin": "^4.2.1",
+    "pino-pretty": "^9.1.0",
+    "tsx": "^3.9.0"
   }
 }
